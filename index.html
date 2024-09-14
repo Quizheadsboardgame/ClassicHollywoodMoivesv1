@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classic Hollywood Movies Quiz</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&display=swap">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Baloo 2', sans-serif;
+            background-color: #38B6FF; /* Background color */
+            color: black;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        #yellow-box {
+            width: 200px;
+            height: 200px;
+            background-color: #FED405; /* Yellow color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            color: black;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            border: 5px solid black; /* Black edging */
+            transition: transform 0.1s ease-in-out;
+        }
+
+        #question-answer {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        /* Keyframes for the bounce animation */
+        @keyframes bounce {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Class to trigger the bounce animation */
+        .animate-bounce {
+            animation: bounce 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="yellow-box">CLASSIC HOLLYWOOD MOVIES</div>
+
+    <div id="question-answer"></div>
+
+    <script>
+        const yellowBox = document.getElementById("yellow-box");
+        const questionAnswerDiv = document.getElementById("question-answer");
+
+        // Array of Classic Hollywood Movies trivia questions and answers
+        const classicHollywoodMoviesQuestions = [
+            { question: "What 1939 film stars Judy Garland as Dorothy?", answer: "The Wizard of Oz" },
+            { question: "Which film features Humphrey Bogart as Rick Blaine?", answer: "Casablanca" },
+            { question: "Who directed 'Gone with the Wind'?", answer: "Victor Fleming" },
+            { question: "What 1954 film stars Audrey Hepburn as Holly Golightly?", answer: "Breakfast at Tiffany's" },
+            { question: "Which film features Marilyn Monroe singing 'Diamonds Are a Girl's Best Friend'?", answer: "Gentlemen Prefer Blondes" },
+            { question: "What is the name of the 1941 film featuring Orson Welles as Charles Foster Kane?", answer: "Citizen Kane" },
+            { question: "Which classic film features James Stewart as George Bailey?", answer: "It's a Wonderful Life" },
+            { question: "Who starred as Scarlett O'Hara in 'Gone with the Wind'?", answer: "Vivien Leigh" },
+            { question: "What 1942 film set during World War II stars Ingrid Bergman and Humphrey Bogart?", answer: "Casablanca" },
+            { question: "Which film features Fred Astaire and Ginger Rogers dancing in the movie?", answer: "Top Hat" },
+            { question: "What 1959 film features Tony Curtis and Jack Lemmon as two musicians in disguise?", answer: "Some Like It Hot" },
+            { question: "What is the name of the 1931 film featuring Bela Lugosi as Count Dracula?", answer: "Dracula" },
+            { question: "Which 1942 film features a love affair between a French singer and a nightclub owner?", answer: "Casablanca" },
+            { question: "What 1952 film stars Gene Kelly and Debbie Reynolds as a singing couple?", answer: "Singin' in the Rain" },
+            { question: "Which film features Cary Grant and Grace Kelly in a suspenseful storyline?", answer: "To Catch a Thief" },
+            { question: "Who directed the 1954 film 'On the Waterfront'?", answer: "Elia Kazan" },
+            { question: "What 1939 film tells the story of a young woman and her adventures in Kansas and Oz?", answer: "The Wizard of Oz" },
+            { question: "Which film features the iconic line 'I'm ready for my close-up'?", answer: "Sunset Boulevard" },
+            { question: "Who starred as the lead role in 'The Maltese Falcon'?", answer: "Humphrey Bogart" },
+            { question: "What 1930 film features Greta Garbo as a Spanish courtesan?", answer: "Romance" },
+            { question: "Which 1941 film is known for its innovative use of deep-focus cinematography?", answer: "Citizen Kane" },
+            { question: "What 1950 film features Gloria Swanson as a former silent film star?", answer: "Sunset Boulevard" },
+            { question: "Which film features Judy Garland as a young girl in a musical fantasy?", answer: "The Wizard of Oz" },
+            { question: "What 1957 film is known for its powerful courtroom drama?", answer: "12 Angry Men" },
+            { question: "Who starred as the lead role in 'Roman Holiday'?", answer: "Audrey Hepburn" },
+            { question: "What 1946 film tells the story of a veteran who returns to his hometown?", answer: "It's a Wonderful Life" },
+            { question: "Which classic film features Rita Hayworth as a sultry dancer?", answer: "Gilda" },
+            { question: "What 1937 film features a young Judy Garland in her first major role?", answer: "Thoroughbreds Don't Cry" },
+            { question: "Who directed the 1952 musical 'Singin' in the Rain'?", answer: "Stanley Donen and Gene Kelly" },
+            { question: "Which film features Marlon Brando as a troubled war hero?", answer: "On the Waterfront" },
+            { question: "What 1954 film features a riveting courtroom drama about a man accused of murder?", answer: "12 Angry Men" },
+            { question: "What is the name of the 1939 film that is considered a masterpiece of Hollywood cinema?", answer: "The Wizard of Oz" },
+            { question: "Who stars as the iconic lead in 'The Maltese Falcon'?", answer: "Humphrey Bogart" },
+            { question: "Which 1957 film is known for its compelling drama about a jury deliberating a murder case?", answer: "12 Angry Men" },
+            { question: "What 1951 film features a suspenseful story involving a mysterious killer?", answer: "The Day the Earth Stood Still" },
+            { question: "Who directed the 1942 classic film 'Casablanca'?", answer: "Michael Curtiz" },
+            { question: "What 1932 film features a dramatic portrayal of a boxer with a troubled past?", answer: "The Champ" },
+            { question: "Which 1940 film features an unforgettable performance by Bette Davis as a scheming woman?", answer: "All About Eve" },
+            { question: "What 1950 film features a harrowing story of a man on the run from the law?", answer: "In a Lonely Place" },
+            { question: "What classic film tells the story of a woman who returns to her hometown to settle old scores?", answer: "Mildred Pierce" },
+            { question: "Which 1949 film features an extraordinary performance by Ingrid Bergman as a troubled woman?", answer: "Notorious" },
+            { question: "What 1958 film tells the story of a man struggling with his own moral dilemmas?", answer: "The Defiant Ones" },
+            { question: "Which 1936 film features a classic performance by Clark Gable as a charming rogue?", answer: "San Francisco" },
+            { question: "What 1953 film is known for its stunning Technicolor visuals and musical numbers?", answer: "Gentlemen Prefer Blondes" }
+        ];
+
+        let shuffledQuestions = [];
+        let questionIndex = 0;
+
+        // Shuffle the questions array
+        function shuffleArray(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        // Initialize questions
+        function initializeQuestions() {
+            shuffledQuestions = shuffleArray([...classicHollywoodMoviesQuestions]);
+            questionIndex = 0;
+            displayQuestion();
+        }
+
+        // Function to display the current question
+        function displayQuestion() {
+            if (shuffledQuestions.length === 0) {
+                questionAnswerDiv.innerHTML = "<strong>No more questions!</strong>";
+                return;
+            }
+            const currentQA = shuffledQuestions[questionIndex];
+            questionAnswerDiv.innerHTML = `<strong>Question:</strong> ${currentQA.question}<br><strong>Answer:</strong> ${currentQA.answer}`;
+        }
+
+        // Bounce animation on click
+        yellowBox.addEventListener("click", () => {
+            yellowBox.classList.add("animate-bounce");
+            setTimeout(() => {
+                yellowBox.classList.remove("animate-bounce");
+            }, 300);
+
+            questionIndex = (questionIndex + 1) % shuffledQuestions.length;
+            displayQuestion();
+        });
+
+        // Initialize questions on page load
+        window.onload = initializeQuestions;
+    </script>
+
+</body>
+</html>
